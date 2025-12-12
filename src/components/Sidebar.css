@@ -12,7 +12,7 @@
     box-shadow: 0 3px 9px var(--color-shadow);
     border: 1px solid;
     transition: width 0.4s ease;
-    z-index: 1; /* Keep it above main content */
+    z-index: 1; /*Keep it above main content*/
 }
 
 .sidebar.collapsed{
@@ -45,6 +45,7 @@
     border: none;
     cursor: pointer;
     border-radius: 8px;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -19,6 +19,8 @@
     --color-hover-primary: #ffc3c5;
     --color-hover-secondary: #e2e2fb;
     --color-shadow: rgba(0, 0, 0, 0.5);
+    --color-task-category: #fdd0d2;
+    --color-page-header: #f5e2e3;
 }
 
 body.dark-theme {
@@ -32,6 +34,8 @@ body.dark-theme {
     --color-hover-primary: #f8bfc1;
     --color-hover-secondary: #48566a;
     --color-shadow: rgba(0, 0, 0, 0.2);
+    --color-task-category: #ffccce;
+    --color-page-header: #f2cacc;
 }
 
 body{
