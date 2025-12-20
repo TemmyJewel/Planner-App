@@ -1,9 +1,10 @@
-
+import PageHeader from '../components/PageHeader';
+import HomePageHeader from "../assets/HomePage Header.png";
 
 function HomePage(){
     return(
         <>
-        Home
+        <PageHeader pageName="Home" pageImage={HomePageHeader} />
         </>
     )
 }

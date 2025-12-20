@@ -1,9 +1,10 @@
-
+import PageHeader from '../components/PageHeader';
+import NotesHeader from "../assets/Notes Header.png";
 
 function NotesPage(){
     return(
         <>
-        Notes
+        <PageHeader pageName="Notes" pageImage={NotesHeader} />
         </>
     )
 }

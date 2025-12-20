@@ -276,7 +276,7 @@ const initialCategories = [
         tasks: [
             { id: 'hb8', name: 'Work on coding project', dateCreated: '2025-12-01', dateDue: '2025-12-25' },
             { id: 'hb9', name: 'Practice guitar scales', dateCreated: '2025-12-05', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'h10', name: 'Buy new yarn for knitting', dateCreated: '2025-12-10', dateDue: '2025-12-12' } // *** DUE SOON (12th) ***
+            { id: 'hb10', name: 'Buy new yarn for knitting', dateCreated: '2025-12-10', dateDue: '2025-12-12' } // *** DUE SOON (12th) ***
         ]
     },
     {
