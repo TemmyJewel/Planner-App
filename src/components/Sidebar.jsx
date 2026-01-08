@@ -97,7 +97,7 @@ return (
         className="header-logo"
         />
 
-        <button className="sidebar-toggle" onClick={toggleSidebar}>
+        <button className={`sidebar-toggle ${openSidebar ? '' : 'inactive'}`} onClick={toggleSidebar}>
         <span className="material-symbols-outlined">
             {desktopChevronIcon}
         </span>

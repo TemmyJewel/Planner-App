@@ -19,8 +19,17 @@
     --color-hover-primary: #ffc3c5;
     --color-hover-secondary: #e2e2fb;
     --color-shadow: rgba(0, 0, 0, 0.5);
-    --color-task-category: #fdd0d2;
-    --color-page-header: #f5e2e3;
+    --color-task-category: rgba(253, 208, 210, 0.8);
+    --color-page-header: #fce1e2;
+    --color-delete: #ff9898;
+    --color-delete-hover: #d16d6d; 
+    --color-edit: #76d8e4;
+    --color-edit-hover: #69cec4;
+    
+     --color-edit-header: #76d8e4;
+    --color-edit-header-hover: #69cec4;
+    --color-delete-header: #ff9898;
+    --color-delete-header-hover: #d16d6d;
 }
 
 body.dark-theme {
@@ -33,9 +42,17 @@ body.dark-theme {
     --color-border-hr: #3b475c;
     --color-hover-primary: #f8bfc1;
     --color-hover-secondary: #48566a;
-    --color-shadow: rgba(0, 0, 0, 0.2);
-    --color-task-category: #ffccce;
+    --color-shadow: rgba(255, 195, 197, 0.5);
+    --color-task-category: rgba(255, 204, 206, 0.97);
     --color-page-header: #f2cacc;
+    --color-delete: #fa5959;
+    --color-delete-hover: #f68c8c; 
+    --color-edit: #658ca1;
+    --color-edit-hover: #96cec0;
+    --color-delete-header: #ff5959;
+    --color-delete-header-hover: #d07b7b;
+    --color-edit-header: #658ca1;
+    --color-edit-header-hover: #96cec0;
 }
 
 body{

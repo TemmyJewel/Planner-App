@@ -1,0 +1,189 @@
+.task-category-detail {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border-radius: 15px;
+    min-height: 100vh;
+    box-shadow: 0 4px 20px 0 var(--color-shadow);
+}
+
+.task-category-header {
+    position: sticky;
+    top: 0;
+    z-index: 0.5;
+
+    padding: min(25px, 3.5%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    background-color: var(--color-page-header);
+    box-shadow: 0 2px 10px 0 var(--color-shadow);
+    color: #1F2936;
+}
+
+.task-category-header h2 {
+    font-size: clamp(25px, calc(4vw + 1rem), 40px);
+    flex: 1;
+}
+
+.task-category-header .material-symbols-outlined {
+    cursor: pointer;
+    font-size: clamp(20px, calc(3vw + 1rem), 40px);
+    transition: color 0.3s ease;
+}
+
+.task-category-span-icons{
+    align-self: center;
+    display: flex;
+    gap: 15px;
+    background-color: var(--color-bg-secondary);
+    border-radius: 10px;
+    padding: 5px 10px;
+}
+
+.edit-btn, .delete-btn{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.task-category-span-icons .header-delete-icon{
+    margin-left: 10px;
+}
+
+.header-edit-icon{
+    color: var(--color-edit-header);
+}
+
+.header-edit-icon:hover{
+    color: var(--color-edit-header-hover);
+}
+
+.header-delete-icon{
+    color: var(--color-delete-header);
+}
+
+.header-delete-icon:hover{
+    color: var(--color-delete-header-hover);
+}
+
+.edit-icon{
+    color: var(--color-edit);
+}
+
+.edit-icon:hover{
+    color: var(--color-edit-hover);
+}
+
+.delete-icon{
+    color: var(--color-delete);
+}
+
+.delete-icon:hover{
+    color: var(--color-delete-hover);
+}
+
+.task-category-tasks-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.task-category-h2{
+    text-align: left;
+    padding: 0 20px;
+    line-height: 1.6;
+}
+
+.add-task-btn {
+    height: 40px;
+    padding: 7px 15px;
+
+    font-size: clamp(10px, calc(2vw + 1rem), 16px);
+    border-radius: 10px;
+    border: none;
+
+    background-color: var(--color-task-category);
+    color: #1F2936;
+
+    cursor: pointer;
+    box-shadow: 0 4px 20px 0 var(--color-shadow);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.add-task-btn:hover{
+    background-color: var(--color-hover-primary);
+
+}
+
+.add-task-section{
+    display: flex;
+    align-items: center;
+}
+
+.add-task-input{
+    display: none;
+    font-size: clamp(16px, calc(2vw + 1rem), 24px);
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-hr);
+    margin-right: 10px;
+}
+
+.add-task-input.show{
+    display: inline-block;
+}
+
+.task-category-task-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: var(--color-bg-primary);
+    margin: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 var(--color-shadow);
+    border-left: 15px solid var(--color-task-category);
+    transition: background-color 0.3s ease;
+}
+
+.task-category-task-item .edit-task-input{
+    font-size: clamp(16px, calc(2vw + 1rem), 24px);
+    padding: 5px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-hr);
+    width: 35%;
+}
+
+.task-category-task-item:hover {
+    background-color: var(--color-hover-secondary);
+}
+
+.task-category-task-item .task-metadata{
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    font-size: clamp(12px, 1.5vw, 16px);
+    color: var(--color-text-placeholder);
+    gap: 15px;
+}
+
+.task-category-task-item.overdue {
+    border-color: #F87171;
+}
+
+.task-category-task-item.dueToday {
+    border-color: #FCD34D;
+}
+
+.task-category-task-item.dueSoon {
+    border-color: #B4F8D0;
+}
+
+.task-category-task-item:hover {
+    background-color: var(--color-hover-secondary);
+}

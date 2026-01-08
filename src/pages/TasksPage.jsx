@@ -5,70 +5,123 @@
 // (Simple, direct, easy to understand)
 
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 import './TasksPage.css';
 import PageHeader from '../components/PageHeader';
 import TaskHeader from "../assets/Task Header.png";
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // ================================================
 // 📌 MAIN COMPONENT: TasksPage
 // ================================================
-function TasksPage() {
+function TasksPage({taskCategories, setTaskCategories}) {
+    
+    const [selectedStatus, setSelectedStatus] = useState('overdue');
+
+    function handleStatusClick(status) {
+        setSelectedStatus(status);
+
+    }
+
     return (
         <div className='task-page'>
             <PageHeader pageName="Your Tasks" pageImage={TaskHeader} />
 
-            {/* Category section */}
-            <TaskCategories />
 
-            {/* Task list by status */}
-            <div className="due-task">
-                <TaskList status={'overdue'} title={'Tasks Overdue'} />
-                <TaskList status={'dueToday'} title={'Tasks Due Today'} />
-                <TaskList status={'dueSoon'} title={'Tasks Due Soon'} />
+            {/* Category section */}
+            <TaskCategories 
+            taskCategories = {taskCategories}
+            setTaskCategories = {setTaskCategories}/>
+
+            <div className="task-status">
+                <h2>Tasks by Status</h2>
+                {/* Task list by status */}
+                <div className="due-task">
+                    <div className="btn">
+                        <button 
+                            className={`overdue ${selectedStatus === 'overdue' ? 'active' : ''}`}
+                            onClick={() => handleStatusClick('overdue')}
+                            >Task OverDue</button>
+                        <button className={`due-today ${selectedStatus === 'dueToday' ? 'active' : ''}`}
+                            onClick={() => handleStatusClick('dueToday')}
+                            >Task Due Today</button>
+                        <button className={`due-soon ${selectedStatus === 'dueSoon' ? 'active' : ''}`}
+                            onClick={() => handleStatusClick('dueSoon')}
+                            >Task Due Soon</button>
+                    </div>
+
+                    <TaskList 
+                        status={selectedStatus} 
+                        taskCategories={taskCategories} 
+                    />
+                    
+            
+                </div>
             </div>
-        </div>
+        </div>   
     );
 }
+
 
 // ================================================
 // 📌 TASK DATA (inside component to allow updates)
 // ================================================
-function TaskCategories() {
-    const [taskCategories, setTaskCategories] = useState(initialCategories);
+function TaskCategories({taskCategories, setTaskCategories}) {
+    const [formActive, setFormActive] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [categoryColor, setCategoryColor] = useState("#fdd0d2");
 
+    function deleteCategory(categoryId) {
+        const updatedCategories = taskCategories.filter(
+            (category) => category.id !== categoryId
+        );
+        setTaskCategories(updatedCategories);
+    }
+
     return (
-        <div className="task-categories">
-            {/* Display all categories */}
-            {taskCategories.map((taskCategory) => (
-                <div key={taskCategory.id} className='task-category'>
-                    <h3>{taskCategory.name}</h3>
+        <div className="task-categories-section">
+            <div className="task-categories-header">
+                <h2>Task Categories</h2>
+                {/* Button to open category form */}
+                    <button className='create-category-btn' onClick={() => setFormActive(true)}>
+                        Add Category
+                    </button>
+                {/* Category creation form */}
+                    <AddTaskCategory
+                        taskCategories={taskCategories}
+                        setTaskCategories={setTaskCategories}
+                        categoryName={categoryName}
+                        setCategoryName={setCategoryName}
+                        categoryColor={categoryColor}
+                        setCategoryColor={setCategoryColor}
+                        formActive={formActive}
+                        setFormActive={setFormActive}
+                    />
+            </div>
+            <div className="task-categories">
+                {/* Display all categories */}
+                {taskCategories.map((taskCategory) => (
+                    <Link to={`/tasks/category/${taskCategory.id}`} key={taskCategory.id}>
+                    <div  className='task-category'>
+                        <h3>{taskCategory.name}</h3>
 
-                    {taskCategory.tasks.map((task) => (
-                        <div key={task.id}>
-                            <p>{task.name}</p>
-                            <p>{task.dateDue}</p>
-                        </div>
-                    ))}
-                </div>
-            ))}
+                        {taskCategory.tasks.slice(0, 3).map((task) => (
+                                <p key={task.id}>{task.name}</p>
+                        ))}
 
-            {/* Button to open category form */}
-            <button className='create-category-btn'>
-                <span className="material-symbols-outlined">add_2</span>
-            </button>
-
-            {/* New Category Form */}
-            <AddTaskCategory
-                taskCategories={taskCategories}
-                setTaskCategories={setTaskCategories}
-                categoryName={categoryName}
-                setCategoryName={setCategoryName}
-                categoryColor={categoryColor}
-                setCategoryColor={setCategoryColor}
-            />
+                        <button className="delete-category-btn" onClick={(e) => {
+                            e.preventDefault();   
+                            e.stopPropagation();
+                            deleteCategory(taskCategory.id)}}>
+                            <span className="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                    </Link>
+                ))}
+                
+            </div>
         </div>
     );
 }
@@ -83,12 +136,34 @@ function AddTaskCategory({
     setCategoryName,
     categoryColor,
     setCategoryColor,
+    formActive,
+    setFormActive
 }) {
+
+    // Ref that points to add task form
+    const formRef = useRef();
+
+    useEffect(() => {
+        // Click outside form to close it
+        function handleClickOutside(event) {
+            if (formActive && formRef.current && !formRef.current.contains(event.target)) {
+                setFormActive(false);
+            }
+        }
+            document.addEventListener("mousedown", handleClickOutside);
+
+            return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [formActive, setFormActive]);
+
+
+    // Create new category handler
     function handleCreateNewCategory(e) {
         e.preventDefault();
+        setFormActive(false);
 
         // generate new id
-        const newID = crypto.randomUUID();
+        const lastCategory = taskCategories[taskCategories.length - 1];
+        const newID = lastCategory ? lastCategory.id + 1 : 1;
 
         // New category format
         const newCategory = {
@@ -104,9 +179,14 @@ function AddTaskCategory({
     }
 
     return (
-        <form className='add-task-form' onSubmit={handleCreateNewCategory}>
+        <form 
+            ref={formRef}
+            className={`add-task-form ${formActive ? 'active' : ''}`} 
+            onSubmit={handleCreateNewCategory}
+        >
             {/* Category name input */}
             <input
+                name='taskCategory'
                 type="text"
                 className='add-task-input'
                 placeholder='Name your new category'
@@ -117,6 +197,7 @@ function AddTaskCategory({
 
             {/* Color selector */}
             <select
+                name='chooseColor'
                 className='chose-color'
                 value={categoryColor}
                 onChange={(e) => setCategoryColor(e.target.value)}
@@ -160,6 +241,7 @@ function getTasksByStatus(taskCategories, status) {
             .map((task) => ({
                 ...task,
                 category: taskCategory.name,
+                categoryId: taskCategory.id
             }));
     });
 }
@@ -167,183 +249,28 @@ function getTasksByStatus(taskCategories, status) {
 // ================================================
 // 📌 TASK LIST SECTIONS (Overdue / Due Today / Due Soon)
 // ================================================
-function TaskList({ status, title }) {
-    const tasks = getTasksByStatus(initialCategories, status);
+function TaskList({ status, taskCategories }) {
+    const tasks = getTasksByStatus(taskCategories, status);
 
     if (tasks.length === 0) return null;
 
     return (
         <div className={`task-list ${status}`}>
-            <h2>{title}</h2>
-
             {tasks.map((task) => (
-                <p key={task.id}>
-                    <strong>{task.category}</strong> {task.name} — {task.dateDue}
-                </p>
+                <Link to={`/tasks/category/${task.categoryId}`} key={task.id}>
+                    <div className='task-item'>
+                        <div className="section1">
+                            <p className='task-name'>{task.name}</p>
+                            <p className='cat-name'><strong>{task.category}</strong></p>
+                        </div>
+                        <p>{task.dateDue}</p>
+                    </div>
+                </Link>
             ))}
         </div>
     );
 }
 
-// ================================================
-// 📌 INITIAL CATEGORY DATA (kept clean + separate)
-// ================================================
-const initialCategories = [
-    // --- CORE CATEGORIES (1-3) ---
-    {
-        id: 101,
-        name: 'School',
-        tasks: [
-            { id: 's1', name: 'Submit final essay draft', dateCreated: '2025-12-01', dateDue: '2025-12-15' },
-            { id: 's2', name: 'Study for history quiz', dateCreated: '2025-12-08', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 's3', name: 'Review math homework', dateCreated: '2025-12-10', dateDue: '2025-12-11' },   // *** DUE TODAY ***
-            { id: 's4', name: 'Email professor about extension', dateCreated: '2025-12-09', dateDue: '2025-12-10' }, // *** OVERDUE ***
-            { id: 's5', name: 'Form study group for biology', dateCreated: '2025-12-05', dateDue: '2025-12-16' },
-        ]
-    },
-    {
-        id: 102,
-        name: 'Work',
-        tasks: [
-            { id: 'w1', name: 'Review Q4 budget proposal', dateCreated: '2025-11-20', dateDue: '2025-12-31' },
-            { id: 'w2', name: 'Schedule team kickoff meeting', dateCreated: '2025-12-09', dateDue: '2025-12-13' }, // *** DUE SOON (13th) ***
-            { id: 'w3', name: 'Update client status report', dateCreated: '2025-12-10', dateDue: '2025-12-10' }, // *** OVERDUE ***
-            { id: 'w4', name: 'Submit vacation request form', dateCreated: '2025-12-01', dateDue: '2025-12-15' },
-            { id: 'w5', name: 'Prepare Q1 presentation slides', dateCreated: '2025-12-05', dateDue: '2026-01-05' },
-        ]
-    },
-    {
-        id: 103,
-        name: 'Personal',
-        tasks: [
-            { id: 'p1', name: 'Call dentist for appointment', dateCreated: '2025-12-01', dateDue: '2025-12-24' },
-            { id: 'p2', name: 'Buy groceries', dateCreated: '2025-12-09', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'p3', name: 'Renew library card', dateCreated: '2025-12-05', dateDue: '2025-12-18' },
-            { id: 'p4', name: 'Book haircut', dateCreated: '2025-12-01', dateDue: '2025-12-15' },
-            { id: 'p5', name: 'Organize junk drawer', dateCreated: '2025-12-10', dateDue: '2025-12-30' },
-            { id: 'p6', name: 'Research new phone plans', dateCreated: '2025-11-28', dateDue: '2025-12-25' },
-        ]
-    },
-    
-    // --- HEALTH & HOME (4-7) ---
-    {
-        id: 104,
-        name: 'Fitness',
-        tasks: [
-            { id: 'f4', name: 'Plan next week\'s workouts', dateCreated: '2025-12-08', dateDue: '2025-12-15' },
-            { id: 'f5', name: 'Go for a morning run', dateCreated: '2025-12-10', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'f6', name: 'Buy new gym shoes', dateCreated: '2025-12-03', dateDue: '2025-12-20' },
-            { id: 'f7', name: 'Measure and track progress', dateCreated: '2025-12-01', dateDue: '2025-12-31' },
-            { id: 'f8', name: 'Stretch for 15 minutes', dateCreated: '2025-12-10', dateDue: '2025-12-10' }, // *** OVERDUE ***
-        ]
-    },
-    {
-        id: 105,
-        name: 'Financial',
-        tasks: [
-            { id: 'fn5', name: 'Pay rent/mortgage', dateCreated: '2025-12-01', dateDue: '2025-12-01' }, // *** OVERDUE ***
-            { id: 'fn6', name: 'Review utility bills', dateCreated: '2025-12-10', dateDue: '2025-12-17' },
-            { id: 'fn7', name: 'Transfer money to savings', dateCreated: '2025-12-05', dateDue: '2025-12-31' },
-            { id: 'fn8', name: 'Set up automatic bill payments', dateCreated: '2025-12-08', dateDue: '2025-12-15' },
-            { id: 'fn9', name: 'Check credit score', dateCreated: '2025-11-25', dateDue: '2025-12-25' },
-        ]
-    },
-    {
-        id: 106,
-        name: 'Home Chores',
-        tasks: [
-            { id: 'h6', name: 'Clean kitchen countertops', dateCreated: '2025-12-10', dateDue: '2025-12-10' }, // *** OVERDUE ***
-            { id: 'h7', name: 'Laundry day', dateCreated: '2025-12-09', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'h8', name: 'Mow the lawn', dateCreated: '2025-12-05', dateDue: '2025-12-14' }, // *** DUE SOON (14th) ***
-            { id: 'h9', name: 'Change bed sheets', dateCreated: '2025-12-05', dateDue: '2025-12-12' }, // *** DUE SOON (12th) ***
-            { id: 'h10', name: 'Take garbage bins out', dateCreated: '2025-12-10', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-        ]
-    },
-    {
-        id: 107,
-        name: 'Health',
-        tasks: [
-            { id: 'hl7', name: 'Schedule annual physical', dateCreated: '2025-11-15', dateDue: '2025-12-30' },
-            { id: 'hl8', name: 'Refill prescription', dateCreated: '2025-12-08', dateDue: '2025-12-12' }, // *** DUE SOON (12th) ***
-            { id: 'hl9', name: 'Log dinner calories', dateCreated: '2025-12-10', dateDue: '2025-12-10' } // *** OVERDUE ***
-        ]
-    },
-    
-    // --- HOBBIES & CREATIVE (8-11) ---
-    {
-        id: 108,
-        name: 'Hobby',
-        tasks: [
-            { id: 'hb8', name: 'Work on coding project', dateCreated: '2025-12-01', dateDue: '2025-12-25' },
-            { id: 'hb9', name: 'Practice guitar scales', dateCreated: '2025-12-05', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'hb10', name: 'Buy new yarn for knitting', dateCreated: '2025-12-10', dateDue: '2025-12-12' } // *** DUE SOON (12th) ***
-        ]
-    },
-    {
-        id: 109,
-        name: 'Reading',
-        tasks: [
-            { id: 'r9', name: 'Finish "Dune"', dateCreated: '2025-12-01', dateDue: '2025-12-20' },
-            { id: 'r10', name: 'Read article on AI ethics', dateCreated: '2025-12-07', dateDue: '2025-12-14' }, // *** DUE SOON (14th) ***
-            { id: 'r11', name: 'Annotate Chapter 3', dateCreated: '2025-12-10', dateDue: '2025-12-12' } // *** DUE SOON (12th) ***
-        ]
-    },
-    {
-        id: 110,
-        name: 'Travel',
-        tasks: [
-            { id: 't10', name: 'Book flight tickets for holiday', dateCreated: '2025-11-01', dateDue: '2025-12-15' },
-            { id: 't11', name: 'Pack essentials bag', dateCreated: '2025-12-09', dateDue: '2025-12-28' },
-            { id: 't12', name: 'Confirm hotel reservation', dateCreated: '2025-12-05', dateDue: '2025-12-20' }
-        ]
-    },
-    {
-        id: 111,
-        name: 'Social',
-        tasks: [
-            { id: 'sc11', name: 'Call Mom', dateCreated: '2025-12-01', dateDue: '2025-12-15' },
-            { id: 'sc12', name: 'Plan dinner with friends', dateCreated: '2025-12-05', dateDue: '2025-12-14' }, // *** DUE SOON (14th) ***
-            { id: 'sc13', name: 'Send birthday card to Alex', dateCreated: '2025-12-10', dateDue: '2025-12-12' } // *** DUE SOON (12th) ***
-        ]
-    },
-    
-    // --- MISCELLANEOUS (12-15) ---
-    {
-        id: 112,
-        name: 'Admin',
-        tasks: [
-            { id: 'ad12', name: 'Sort and file receipts', dateCreated: '2025-12-01', dateDue: '2025-12-31' },
-            { id: 'ad13', name: 'Empty old email folders', dateCreated: '2025-12-08', dateDue: '2025-12-15' },
-            { id: 'ad14', name: 'Update passwords in manager', dateCreated: '2025-12-10', dateDue: '2025-12-17' }
-        ]
-    },
-    {
-        id: 113,
-        name: 'Learning',
-        tasks: [
-            { id: 'lr13', name: 'Complete React course module 3', dateCreated: '2025-12-05', dateDue: '2025-12-19' },
-            { id: 'lr14', name: 'Watch CSS tutorial', dateCreated: '2025-12-10', dateDue: '2025-12-11' }, // *** DUE TODAY ***
-            { id: 'lr15', name: 'Find resource on API security', dateCreated: '2025-12-03', dateDue: '2025-12-14' } // *** DUE SOON (14th) ***
-        ]
-    },
-    {
-        id: 114,
-        name: 'Reminders',
-        tasks: [
-            { id: 'rm14', name: 'Water the plants', dateCreated: '2025-12-09', dateDue: '2025-12-12' }, // *** DUE SOON (12th) ***
-            { id: 'rm15', name: 'Charge laptop battery', dateCreated: '2025-12-10', dateDue: '2025-12-10' }, // *** OVERDUE ***
-            { id: 'rm16', name: 'Take out the trash', dateCreated: '2025-12-05', dateDue: '2025-12-11' } // *** DUE TODAY ***
-        ]
-    },
-    {
-        id: 115,
-        name: 'Shopping',
-        tasks: [
-            { id: 'sh15', name: 'Order headphones', dateCreated: '2025-12-01', dateDue: '2025-12-15' },
-            { id: 'sh16', name: 'Return library books', dateCreated: '2025-12-09', dateDue: '2025-12-12' }, // *** DUE SOON (12th) ***
-            { id: 'sh17', name: 'Buy birthday gift for friend', dateCreated: '2025-12-05', dateDue: '2025-12-25' }
-        ]
-    }
-];
+
 
 export default TasksPage;
