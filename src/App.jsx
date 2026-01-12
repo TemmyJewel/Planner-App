@@ -26,7 +26,7 @@ function App() {
       <Sidebar />
       <main className="main-content"> 
         <Routes>
-          <Route index element={ <HomePage />} />
+          <Route index element={ <HomePage taskCategories={taskCategories}/>} />
           <Route path="tasks" 
                   element={<TasksPage 
                             taskCategories = {taskCategories}

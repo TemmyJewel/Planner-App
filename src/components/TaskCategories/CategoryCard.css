@@ -1,0 +1,70 @@
+.task-categories a{
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.task-category {
+    height: 200px;
+    padding: 35px 20px;
+
+    border-radius: 40px;
+    background-color: var(--color-task-category);
+    color: #1F2936;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px 0 var(--color-shadow);
+
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.task-category h3 {
+    text-align: center;
+}
+
+.task-category:hover {
+    background-color: var(--color-hover-primary);
+    transform: scale(1.1);
+    position: relative;
+    z-index: 10;
+}
+
+.delete-category-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 17px;
+
+
+    background: rgba(255, 255, 255, 0);
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #4f5e75;
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+    .task-categories {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .task-category {
+        padding: 10px 15px; 
+        border-radius: 25px; 
+    }
+
+}
+@media (min-width: 601px) and (max-width: 900px) {
+    .task-categories {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .task-category {
+        padding: 10px 15px; 
+        border-radius: 25px; 
+    }
+    
+}

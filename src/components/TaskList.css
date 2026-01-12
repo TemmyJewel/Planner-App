@@ -1,0 +1,65 @@
+.task-list a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.task-list {
+    margin: 0 auto;
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 70%;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-left: 15px solid var(--color-border-hr);
+    border-radius: 10px;
+    background-color: var(--color-bg-secondary);
+    box-shadow: 0 4px 10px 0 var(--color-shadow);
+    transition: background-color 0.3s ease;
+}
+
+.task-list.overdue .task-item{
+    border-color: #F87171;
+}
+
+.task-list.dueToday .task-item{
+    border-color: #FCD34D;
+}
+
+.task-list.dueSoon .task-item{
+    border-color: #B4F8D0;
+}
+
+.task-item:hover {
+    background-color: var(--color-hover-secondary);
+}
+
+.task-name {
+    font-size: clamp(15px, calc(1.2vw + 1rem), 25px);
+}
+
+.cat-name{
+        margin-top: 5px;
+        font-size: clamp(12px, calc(1vw + 1rem), 18px);
+        color: var(--color-text-placeholder);
+}
+
+@media (max-width: 600px) {
+    .task-list {
+        width: 100%;
+    }
+
+}
+@media (min-width: 601px) and (max-width: 900px) {
+    .task-list {
+        width: 100%;
+    }
+
+}

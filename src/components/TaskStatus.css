@@ -1,0 +1,66 @@
+/* =========================
+    DUE TASKS SECTION
+   ========================= */
+
+.due-task {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px 30px;
+    gap: 15px;
+    justify-content: center;
+    align-content: center;
+} 
+
+.btn{
+    width: 100%;
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.btn button {
+    height: 70px;
+    padding: 7px 20px;
+
+    font-size: clamp(7px, calc(2vw + 1rem), 20px);
+    border-radius: 20px;
+
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--color-text-primary);
+
+    box-shadow: 0 2px 10px 0 var(--color-shadow);
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn .overdue{
+    border: 5px solid #F87171;
+}
+
+.btn .due-today{
+    border: 5px solid #FCD34D;
+}
+
+.btn .due-soon{
+    border: 5px solid #B4F8D0;
+}
+
+.btn button:hover, .btn button.active {
+    color: #000000;
+    transform: scale(1.1);
+}
+
+.btn .overdue:hover, .overdue.active {
+    background-color: #F87171;
+}
+
+.btn .due-today:hover, .due-today.active {
+    background-color: #FCD34D;
+}
+
+.btn .due-soon:hover, .due-soon.active {
+    background-color: #B4F8D0;
+}
+

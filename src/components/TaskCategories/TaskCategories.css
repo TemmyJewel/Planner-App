@@ -1,0 +1,76 @@
+/* =========================
+    CATEGORY HEADER AREA
+   ========================= */
+
+.task-categories-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: min(10px, 2%);
+}
+
+.task-categories-section {
+    border: 1px solid var(--color-border-hr);
+    margin-bottom: min(40px, 5%);
+    padding-bottom: min(30px, 5%);
+    box-shadow: 0 4px 10px 0 var(--color-shadow);
+}
+
+.task-categories-section h2 {
+    margin: 30px 0;
+    flex: 1;
+}
+
+/* =========================
+    CREATE CATEGORY BUTTON
+   ========================= */
+
+.create-category-btn {
+    flex: 0.2;
+    height: 50px;
+    padding: 7px;
+
+    font-size: clamp(10px, calc(3vw + 1rem), 20px);
+    border-radius: 10px;
+    border: none;
+
+    background-color: var(--color-task-category);
+    color: #1F2936;
+
+    cursor: pointer;
+    box-shadow: 0 4px 20px 0 var(--color-shadow);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.create-category-btn:hover {
+    background-color: var(--color-hover-primary);
+    transform: scale(1.1);
+}
+
+.task-categories {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+@media (max-width: 600px) {
+    .create-category-btn {
+        flex: none;
+    }
+
+    .task-categories {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+    .create-category-btn {
+        flex: none;
+    }
+
+    .task-categories {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+}
