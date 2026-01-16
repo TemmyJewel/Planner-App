@@ -11,6 +11,7 @@
     flex-direction: column;
     gap: 20px;
     width: 70%;
+    color: var(--color-text-primary);
 }
 
 .task-item {

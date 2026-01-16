@@ -1,0 +1,6 @@
+.home-page{
+    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}

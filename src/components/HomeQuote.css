@@ -1,0 +1,13 @@
+.quote-container{
+    margin: 20px;
+    padding: 20px;
+    color: #ff9898;
+    border-radius: 10px;
+    background: var(--color-bg-secondary);
+}
+
+.quote-author{
+    margin-top: 10px;
+    text-align: right;
+    transition: all 0.3s ease;
+}

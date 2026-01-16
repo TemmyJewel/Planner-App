@@ -56,3 +56,10 @@
 
     cursor: pointer;
 }
+
+@media (max-width: 600px) {
+    .add-task-form {
+        width: 80%;
+        padding: 30px 20px;
+    }
+}

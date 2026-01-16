@@ -1,0 +1,9 @@
+.note-textarea{
+    width: 100%;
+    min-height: 200px;
+    display: none;
+    font-size: clamp(10px, calc(1vw + 1rem), 16px);
+}
+.note-textarea.active {
+    display: block;
+}
